@@ -1,4 +1,5 @@
-(ns matthiasn.systems-toolbox-ui.helpers)
+(ns matthiasn.systems-toolbox-ui.helpers
+  (:require [cljs.pprint :as pp]))
 
 (defn by-id
   "Helper function, gets DOM element by ID."
@@ -16,3 +17,9 @@
       (.-mozRequestAnimationFrame js/window)
       (.-msRequestAnimationFrame js/window)
       (fn [callback] (js/setTimeout callback 17))))
+
+(defn pp-div
+  "Renders counter view which observes the state held by the state component. Clicking
+  on it sends an increment command message."
+  [current-state]
+  [:pre [:code (with-out-str (pp/pprint current-state))]])
