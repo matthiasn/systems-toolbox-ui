@@ -1,3 +1,12 @@
+## v0.5.7 - April 8th, 2016
+
+```clojure
+[matthiasn/systems-toolbox-ui "0.5.7"]
+```
+
+* dependency upgrades
+
+
 ## v0.5.4 - February 24th, 2016
 
 ```clojure
