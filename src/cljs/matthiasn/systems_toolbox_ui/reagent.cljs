@@ -20,23 +20,19 @@
              :observed observed
              :initial-state initial-state}}))
 
-(defn default-state-pub-handler
-  "Default handler function, can be replaced by a more application-specific handler function, for example
-  for resetting local component state when user is not logged in."
-  [{:keys [cmp-state msg-payload]}]
-  (reset! (:observed cmp-state) msg-payload))
-
 (defn cmp-map
   "Creates a component map for a UI component using Reagent. This map can then be used by the comp/make-component
   function to initialize a component. Typically, this would be done by the switchboard."
   {:added "0.3.1"}
-  [{:keys [cmp-id view-fn lifecycle-callbacks dom-id initial-state init-fn cfg handler-map state-pub-handler]}]
+  [{:keys [cmp-id view-fn lifecycle-callbacks dom-id initial-state init-fn cfg handler-map state-pub-handler
+           observed-xform]}]
   (let [snapshot-wrapper (fn [m] (view-fn (merge m {:current-state @(:observed m)})))
         reagent-cmp-map (merge lifecycle-callbacks
                                {:reagent-render snapshot-wrapper})
         mk-state (partial init reagent-cmp-map dom-id initial-state init-fn)]
     {:cmp-id            cmp-id
      :state-fn          mk-state
+     :observed-xform    observed-xform
      :handler-map       handler-map
-     :state-pub-handler (or state-pub-handler default-state-pub-handler)
+     :state-pub-handler state-pub-handler
      :opts              (merge cfg {:watch :local})}))

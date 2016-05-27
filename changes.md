@@ -1,3 +1,12 @@
+## v0.5.8 - May 28th, 2016
+
+```clojure
+[matthiasn/systems-toolbox-ui "0.5.8"]
+```
+
+* support for observed-xform function to be applied when receiving state snapshot
+
+
 ## v0.5.7 - April 8th, 2016
 
 ```clojure
