@@ -1,5 +1,8 @@
 (ns matthiasn.systems-toolbox-ui.reagent
   (:require [reagent.core :as r :refer [create-class atom]]
+            [matthiasn.systems-toolbox-ui.spec :as spec]
+            [cljs.spec :as s]
+            [matthiasn.systems-toolbox.spec :as st-spec]
             [matthiasn.systems-toolbox-ui.helpers :refer [by-id]]))
 
 (defn init
@@ -25,11 +28,12 @@
   function to initialize a component. Typically, this would be done by the switchboard."
   {:added "0.3.1"}
   [{:keys [cmp-id view-fn lifecycle-callbacks dom-id initial-state init-fn cfg handler-map state-pub-handler
-           observed-xform]}]
+           observed-xform] :as cmp-map}]
   (let [snapshot-wrapper (fn [m] (view-fn (merge m {:current-state @(:observed m)})))
         reagent-cmp-map (merge lifecycle-callbacks
                                {:reagent-render snapshot-wrapper})
         mk-state (partial init reagent-cmp-map dom-id initial-state init-fn)]
+    (st-spec/valid-or-no-spec? :st-ui/cmp-map cmp-map)
     {:cmp-id            cmp-id
      :state-fn          mk-state
      :observed-xform    observed-xform
