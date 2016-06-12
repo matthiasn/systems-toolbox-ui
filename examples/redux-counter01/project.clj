@@ -20,7 +20,7 @@
   :main example.core
 
   :plugins [[lein-cljsbuild "1.1.3"]
-            [lein-figwheel "0.5.0-6"]]
+            [lein-figwheel "0.5.0-3"]]
 
   :figwheel {:server-port 3450
              :css-dirs    ["resources/public/css"]}
@@ -36,8 +36,13 @@
                                        :source-map    true}}
                        {:id           "release"
                         :source-paths ["src/cljs"]
-                        :figwheel     true
                         :compiler     {:main          "example.core"
+                                       :asset-path    "js/build"
+                                       :output-to     "resources/public/js/build/example.js"
+                                       :optimizations :advanced}}
+                       {:id           "compact"
+                        :source-paths ["src/cljs"]
+                        :compiler     {:main          "example.compact"
                                        :asset-path    "js/build"
                                        :output-to     "resources/public/js/build/example.js"
                                        :optimizations :advanced}}]})

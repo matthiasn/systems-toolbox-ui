@@ -3,8 +3,7 @@
             [matthiasn.systems-toolbox-ui.helpers :as h]))
 
 (defn counter-view
-  "Renders counter view which observes the state held by the state component. Clicking
-  on it sends an increment command message."
+  "Renders individual counter view, with buttons for increasing or decreasing the value."
   [idx v put-fn]
   [:div
    [:h1 v]
@@ -12,6 +11,9 @@
    [:button {:on-click #(put-fn [:cnt/inc idx])} "inc"]])
 
 (defn counters-view
+  "Renders counters view which observes the state held by the state component.
+  Contains two buttons for adding or removing counters, plus a counter-view
+  for every element in the observed state."
   [{:keys [current-state put-fn]}]
   (let [indexed (map-indexed vector (:counters current-state))]
     [:div.counters

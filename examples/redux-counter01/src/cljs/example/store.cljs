@@ -3,7 +3,7 @@
 (defn inc-handler
   "Handler for incrementing specific counter"
   [{:keys [current-state msg-payload]}]
-    {:new-state (update-in current-state [:counters msg-payload] inc)})
+    {:new-state (update-in current-state [:counters msg-payload] #(+ % 1))})
 
 (defn dec-handler
   "Handler for decrementing specific counter"

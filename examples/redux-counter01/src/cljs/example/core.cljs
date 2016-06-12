@@ -3,8 +3,6 @@
             [example.counter-ui :as cnt]
             [matthiasn.systems-toolbox.switchboard :as sb]))
 
-(enable-console-print!)
-
 (defonce switchboard (sb/component :client/switchboard))
 
 (defn init
