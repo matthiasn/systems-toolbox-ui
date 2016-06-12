@@ -7,8 +7,8 @@
   [idx v put-fn]
   [:div
    [:h1 v]
-   [:button {:on-click #(put-fn [:cnt/dec idx])} "dec"]
-   [:button {:on-click #(put-fn [:cnt/inc idx])} "inc"]])
+   [:button {:on-click #(put-fn [:cnt/dec {:counter idx}])} "dec"]
+   [:button {:on-click #(put-fn [:cnt/inc {:counter idx}])} "inc"]])
 
 (defn counters-view
   "Renders counters view which observes the state held by the state component.

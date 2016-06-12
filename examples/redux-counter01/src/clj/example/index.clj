@@ -2,7 +2,7 @@
   (:require [hiccup.core :refer [html]]))
 
 (defn index-page
-  "Generates index page HTML with the specified page title."
+  "Generates index page HTML."
   [dev?]
   (html
     [:html
