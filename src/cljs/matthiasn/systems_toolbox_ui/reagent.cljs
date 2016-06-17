@@ -19,9 +19,8 @@
                       :cmd      cmd}]
     (r/render [reagent-cmp view-cmp-map] (by-id dom-id))
     (when init-fn (init-fn view-cmp-map))
-    {:state {:local local
-             :observed observed
-             :initial-state initial-state}}))
+    {:state    {:local local}
+     :observed observed}))
 
 (defn cmp-map
   "Creates a component map for a UI component using Reagent. This map can then be used by the comp/make-component

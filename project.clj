@@ -9,7 +9,7 @@
   :dependencies [[reagent "0.6.0-alpha"]
                  [matthiasn/systems-toolbox "0.6.1-SNAPSHOT"]]
 
-  :profiles {:dev {:dependencies [[org.clojure/clojure "1.9.0-alpha5"]
+  :profiles {:dev {:dependencies [[org.clojure/clojure "1.9.0-alpha7"]
                                   [org.clojure/clojurescript "1.9.36"]]}}
 
   :plugins [[lein-codox "0.9.5" :exclusions [org.clojure/clojure]]
