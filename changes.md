@@ -1,3 +1,14 @@
+## v0.6.1-SNAPSHOT - June 17th, 2016
+
+```clojure
+[matthiasn/systems-toolbox-u "0.6.1-SNAPSHOT"]
+```
+
+Potential BREAKING CHANGES:
+
+* Clojure 1.9 required
+
+
 ## v0.5.8 - May 28th, 2016
 
 ```clojure
