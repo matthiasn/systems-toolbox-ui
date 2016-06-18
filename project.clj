@@ -10,7 +10,7 @@
                  [matthiasn/systems-toolbox "0.6.1-SNAPSHOT"]]
 
   :profiles {:dev {:dependencies [[org.clojure/clojure "1.9.0-alpha7"]
-                                  [org.clojure/clojurescript "1.9.36"]]}}
+                                  [org.clojure/clojurescript "1.9.76"]]}}
 
   :plugins [[lein-codox "0.9.5" :exclusions [org.clojure/clojure]]
             [lein-cljsbuild "1.1.3"]])
