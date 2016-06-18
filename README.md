@@ -16,7 +16,7 @@ should there be a need for this.
 
 ## Examples
 
-1) In the examples directory, you can find a basic example example with some counters. This example is somewhat comparable to the respective Redux example. This example is currently client-side only.
+1) In the examples directory of the **[systems-toolbox](https://github.com/matthiasn/systems-toolbox/tree/master/examples)**, you can find a basic example example with some counters. This example is somewhat comparable to the respective Redux example. This example is currently client-side only.
 
 2) A much larger example of an application using this library is **[BirdWatch](https://github.com/matthiasn/Birdwatch)**, a tweet stream analysis application that spans browser and client. There's a live version of this application **[here](https://birdwatch.matthiasnehlsen.com)**.
 
