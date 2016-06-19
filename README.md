@@ -24,6 +24,12 @@ This library has previously been part of the
 **[system-toolbox](https://github.com/matthiasn/systems-toolbox)** library and was moved into a separate 
 repository to reduce dependencies.
 
+## Testing
+
+    $ lein integrations-tests
+
+Tests are run automatically on **CircleCI**: [![CircleCI Build Status](https://circleci.com/gh/matthiasn/systems-toolbox-ui.svg?&style=shield)](https://circleci.com/gh/matthiasn/systems-toolbox-ui)
+
 
 ## License
 

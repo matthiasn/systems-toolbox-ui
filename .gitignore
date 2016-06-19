@@ -11,3 +11,6 @@ pom.xml.asc
 .lein-failures
 .nrepl-port
 *.log
+*.rdb
+test-resources/public/js
+build.xml
