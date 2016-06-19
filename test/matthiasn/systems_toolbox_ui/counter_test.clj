@@ -5,9 +5,6 @@
 
 (deftest open-page
   (testing "open counter example, interact, UI should change"
-    (tx/set-driver! {:browser :chrome})
-    (tx/to "http://localhost:8888")
-
     (testing "click first counter thrice, should be 5"
       (tx/click ".counters div:nth-of-type(1) button:nth-of-type(2)")
       (tx/click ".counters div:nth-of-type(1) button:nth-of-type(2)")

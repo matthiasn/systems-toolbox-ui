@@ -28,7 +28,9 @@ repository to reduce dependencies.
 
     $ lein integrations-tests
 
-Tests are run automatically on **CircleCI**: [![CircleCI Build Status](https://circleci.com/gh/matthiasn/systems-toolbox-ui.svg?&style=shield)](https://circleci.com/gh/matthiasn/systems-toolbox-ui)
+Tests are run automatically on **CircleCI** using Chrome: [![CircleCI Build Status](https://circleci.com/gh/matthiasn/systems-toolbox-ui.svg?&style=shield)](https://circleci.com/gh/matthiasn/systems-toolbox-ui)
+
+On **TravisCI**, the tests are run on **[PhantomJS](http://phantomjs.org/)**: [![TravisCI Build Status](https://travis-ci.org/matthiasn/systems-toolbox-ui.svg?branch=master)](https://travis-ci.org/matthiasn/systems-toolbox-ui)
 
 
 ## License
