@@ -26,7 +26,22 @@ repository to reduce dependencies.
 
 ## Testing
 
+As a default, the tests will run in **Chrome**. This requires you to install **[ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/)** first:
+ 
+    $ bin/get-chromedriver.sh
+
+With ChromeDriver installed, you can fire up the tests:
+
     $ lein integrations-tests
+
+This will run the server side on port `8888`. You can change this via environment variable:
+
+    $ PORT=3333 lein integration-tests
+
+Also, you can run the tests using **[PhantomJS](http://phantomjs.org/)**:
+
+    $ BROWSER=phantomjs lein integration-tests
+
 
 Tests are run automatically on **CircleCI** using Chrome: [![CircleCI Build Status](https://circleci.com/gh/matthiasn/systems-toolbox-ui.svg?&style=shield)](https://circleci.com/gh/matthiasn/systems-toolbox-ui)
 
