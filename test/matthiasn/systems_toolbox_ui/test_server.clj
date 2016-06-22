@@ -30,7 +30,7 @@
     [[:cmd/init-comp (sente/cmp-map :server/ws-cmp {:index-page-fn index-page
                                                     :relay-types   #{}})]])
   (tx/set-driver! {:browser (if (= "phantomjs" (get (System/getenv) "BROWSER")) :phantomjs :chrome)})
-  (tx/to "http://localhost:8888"))
+  (tx/to (str "http://localhost:" (get (System/getenv) "PORT" 8888))))
 
 (defn one-time-teardown []
   (tx/quit tx/*driver*))
