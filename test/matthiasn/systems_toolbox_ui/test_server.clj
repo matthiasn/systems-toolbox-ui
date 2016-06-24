@@ -3,7 +3,8 @@
   (:require [matthiasn.systems-toolbox.switchboard :as sb]
             [matthiasn.systems-toolbox-sente.server :as sente]
             [hiccup.core :refer [html]]
-            [clj-webdriver.taxi :as tx]))
+            [clj-webdriver.taxi :as tx])
+  (:import (java.net ServerSocket)))
 
 (defn index-page
   "Generates index page HTML."
@@ -21,16 +22,26 @@
 
 (defonce switchboard (sb/component :server/switchboard))
 
+(defn get-free-port
+  "Find open port."
+  []
+  (let [socket (ServerSocket. 0)
+        port (.getLocalPort socket)]
+    (.close socket)
+    port))
+
 (defn restart!
   "Starts or restarts system by asking switchboard to fire up the provided ws-cmp, a scheduler
   component and the ptr component, which handles and counts messages about mouse moves."
   []
-  (sb/send-mult-cmd
-    switchboard
-    [[:cmd/init-comp (sente/cmp-map :server/ws-cmp {:index-page-fn index-page
-                                                    :relay-types   #{}})]])
-  (tx/set-driver! {:browser (if (= "phantomjs" (get (System/getenv) "BROWSER")) :phantomjs :chrome)})
-  (tx/to (str "http://localhost:" (get (System/getenv) "PORT" 8888))))
+  (let [port (get-free-port)]
+    (sb/send-mult-cmd
+      switchboard
+      [[:cmd/init-comp (sente/cmp-map :server/ws-cmp {:index-page-fn index-page
+                                                      :relay-types   #{}
+                                                      :port          port})]])
+    (tx/set-driver! {:browser (if (= "phantomjs" (get (System/getenv) "BROWSER")) :phantomjs :chrome)})
+    (tx/to (str "http://localhost:" port))))
 
 (defn one-time-teardown []
   (tx/quit tx/*driver*))
