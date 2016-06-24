@@ -58,11 +58,12 @@
 (defn system-view
   "Renders SVG with an area in which components of a system are shown as a visual representation. These
   visual representations aim at helping in observing a running system."
-  [app put-fn]
+  [app put-fn cfg]
   (let [nodes-map (:nodes-map @app)
         links (:links @app)]
     [:div
-     [:svg {:width "100%" :viewBox "0 0 1000 1000"}
+     [:svg (merge {:width "100%" :viewBox "0 0 1000 1000"}
+                  (:svg-props cfg))
       [:g
        (for [l links]
          ^{:key (str "force-link-" l)}
@@ -87,7 +88,7 @@
     (let [app (atom {:time    (now)
                      :obs-cfg obs-cfg})
           system-view-elem (by-id (:dom-id obs-cfg))]
-      (r/render-component [system-view app put-fn system-view-elem] system-view-elem)
+      (r/render-component [system-view app put-fn obs-cfg] system-view-elem)
       (letfn [(step []
                     (request-animation-frame step)
                     (swap! app assoc :now (now)))]
