@@ -81,47 +81,50 @@
 (defn histogram-view-fn
   "Renders a histogram for roundtrip times."
   [{:keys [rtt-times x y w h x-label color bin-cf max-bins increment-fn]}]
-    (let [mx (apply max rtt-times)
-          mn (apply min rtt-times)
-          rng (- mx mn)
-          increment-fn (or increment-fn default-increment-fn)
-          increment (increment-fn rng)
-          mx2 (round-up (or mx 100) increment)
-          mn2 (round-down (or mn 0) increment)
-          rng2 (- mx2 mn2)
-          x-scale (/ w rng2)
-          bin-size (max (/ rng max-bins) (* (freedman-diaconis-rule rtt-times) bin-cf))
-          binned-freq (frequencies (map (fn [n] (Math/floor (/ (- n mn) bin-size))) rtt-times))
-          binned-freq-mx (apply max (map (fn [[_ f]] f) binned-freq))
-          bins (inc (apply max (map (fn [[v _]] v) binned-freq)))
-          bar-width (/ (* rng x-scale) bins)
-          y-scale (/ (- h 20) binned-freq-mx)]
-      [:g
-       (if (> bins 4)
-         (for [[v f] binned-freq]
-           ^{:key (str "bf" x "-" y "-" v "-" f)}
-           [:rect {:x      (+ x (* (- mn mn2) x-scale) (* v bar-width))
-                   :y      (- y (* f y-scale))
-                   :fill   color :stroke "black"
-                   :width  bar-width
-                   :height (* f y-scale)}])
-         [:text {:x (+ x (/ w 2)) :y (- y 50) :stroke "none" :fill "#DDD" :text-anchor :middle
-                 :style {:font-weight :bold :font-size 24}} "insufficient data"])
-       (histogram-x-axis x (+ y 7) mn2 mx2 w x-scale increment)
-       [:text (merge x-axis-label text-bold {:x (+ x (/ w 2)) :y (+ y 48) :text-anchor :middle}) x-label]
-       [:text (let [x-coord (- x 45) y-coord (- y (/ h 3)) rotate (str "rotate(270 " x-coord " " y-coord ")")]
-                (merge x-axis-label text-bold {:x x-coord :y y-coord :transform rotate})) "Frequencies"]
-       (histogram-y-axis (- x 7) y h (or binned-freq-mx 10))]))
+  (let [mx (apply max rtt-times)
+        mn (apply min rtt-times)
+        rng (- mx mn)
+        increment-fn (or increment-fn default-increment-fn)
+        increment (increment-fn rng)
+        mx2 (round-up (or mx 100) increment)
+        mn2 (round-down (or mn 0) increment)
+        rng2 (- mx2 mn2)
+        x-scale (/ w rng2)
+        bin-size (max (/ rng max-bins) (* (freedman-diaconis-rule rtt-times) bin-cf))
+        binned-freq (frequencies (map (fn [n] (Math/floor (/ (- n mn) bin-size))) rtt-times))
+        binned-freq-mx (apply max (map (fn [[_ f]] f) binned-freq))
+        bins (inc (apply max (map (fn [[v _]] v) binned-freq)))
+        bar-width (/ (* rng x-scale) bins)
+        y-scale (/ (- h 20) binned-freq-mx)]
+    [:g
+     (if (> bins 4)
+       (for [[v f] binned-freq]
+         ^{:key (str "bf" x "-" y "-" v "-" f)}
+         [:rect {:x      (+ x (* (- mn mn2) x-scale) (* v bar-width))
+                 :y      (- y (* f y-scale))
+                 :fill   color :stroke "black"
+                 :width  bar-width
+                 :height (* f y-scale)}])
+       [:text {:x     (+ x (/ w 2)) :y (- y 50) :stroke "none" :fill "#DDD" :text-anchor :middle
+               :style {:font-weight :bold :font-size 24}} "insufficient data"])
+     (histogram-x-axis x (+ y 7) mn2 mx2 w x-scale increment)
+     [:text (merge x-axis-label text-bold {:x (+ x (/ w 2)) :y (+ y 48) :text-anchor :middle}) x-label]
+     [:text (let [x-coord (- x 45) y-coord (- y (/ h 3)) rotate (str "rotate(270 " x-coord " " y-coord ")")]
+              (merge x-axis-label text-bold {:x x-coord :y y-coord :transform rotate})) "Frequencies"]
+     (histogram-y-axis (- x 7) y h (or binned-freq-mx 10))]))
 
 (defn histogram-view
-  "Renders a histogram for roundtrip times."
-  [rtt-times x y w h x-label color bin-cf max-bins]
-  (histogram-view-fn {:rtt-times rtt-times
-                      :x x
-                      :y y
-                      :w w
-                      :h h
-                      :x-label x-label
-                      :color color
-                      :bin-cf bin-cf
-                      :max-bins max-bins}))
+  "Renders an individual histogram for the given data, dimension, label and color,
+  with a reasonable size inside a viewBox, which will then scale smoothly into any
+  div you put it in."
+  [data label color]
+  [:svg {:width "100%" :viewBox "0 0 400 250"}
+   (histogram-view-fn {:rtt-times data
+                       :x         80
+                       :y         180
+                       :w         300
+                       :h         160
+                       :x-label   label
+                       :color     color
+                       :bin-cf    0.8
+                       :max-bins  25})])
