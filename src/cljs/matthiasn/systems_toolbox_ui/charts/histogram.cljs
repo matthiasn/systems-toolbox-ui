@@ -24,9 +24,9 @@
     (take keep-n sorted)))
 
 (defn freedman-diaconis-rule
-  "Implements approximation of Freedman–Diaconis rule for determing bin size in histograms: bin size = 2 IQR(x) n^-1/3
-   where IQR(x) is the interquartile range of the data and n is the number of observations in the sample x.
-   Argument coll is expected to be a collection of numbers."
+  "Implements approximation of Freedman–Diaconis rule for determing bin size in histograms:
+  bin size = 2 IQR(x) n^-1/3 where IQR(x) is the interquartile range of the data and n is the
+  number of observations in the sample x. Argument coll is expected to be a collection of numbers."
   [sample]
   (let [n (count sample)]
     (when (pos? n)
@@ -51,10 +51,12 @@
      [:path (merge path-defaults {:d (str "M" x " " y "l 0 " (* h -1) " z")})]
      (for [n rng]
        ^{:key (str "yt" n)}
-       [:path (merge path-defaults {:d (str "M" x " " (- y (* (/ n increment) scale)) "l -" 6 " 0")})])
+       [:path (merge path-defaults
+                     {:d (str "M" x " " (- y (* (/ n increment) scale)) "l -" 6 " 0")})])
      (for [n rng]
        ^{:key (str "yl" n)}
-       [:text (merge text-default {:x (- x 10) :y (- y (* (/ n increment) scale) -4) :text-anchor :end}) n])]))
+       [:text (merge text-default
+                     {:x (- x 10) :y (- y (* (/ n increment) scale) -4) :text-anchor :end}) n])]))
 
 (defn histogram-x-axis
   "Draws x-axis for histrogram."
@@ -62,9 +64,12 @@
   (let [rng (range mn (inc mx) increment)]
     [:g
      [:path (merge path-defaults {:d (str "M" x " " y "l" w " 0 z")})]
-     (for [n rng] ^{:key (str "xt" n)}
-                  [:path (merge path-defaults {:d (str "M" (+ x (* (- n mn) scale)) " " y "l 0 " 6)})])
-     (for [n rng] ^{:key (str "xl" n)} [:text (merge x-axis-label {:x (+ x (* (- n mn) scale)) :y (+ y 20)}) n])]))
+     (for [n rng]
+       ^{:key (str "xt" n)}
+       [:path (merge path-defaults {:d (str "M" (+ x (* (- n mn) scale)) " " y "l 0 " 6)})])
+     (for [n rng]
+       ^{:key (str "xl" n)}
+       [:text (merge x-axis-label {:x (+ x (* (- n mn) scale)) :y (+ y 20)}) n])]))
 
 (defn default-increment-fn
   [rng]
@@ -108,9 +113,13 @@
        [:text {:x     (+ x (/ w 2)) :y (- y 50) :stroke "none" :fill "#DDD" :text-anchor :middle
                :style {:font-weight :bold :font-size 24}} "insufficient data"])
      (histogram-x-axis x (+ y 7) mn2 mx2 w x-scale increment)
-     [:text (merge x-axis-label text-bold {:x (+ x (/ w 2)) :y (+ y 48) :text-anchor :middle}) x-label]
-     [:text (let [x-coord (- x 45) y-coord (- y (/ h 3)) rotate (str "rotate(270 " x-coord " " y-coord ")")]
-              (merge x-axis-label text-bold {:x x-coord :y y-coord :transform rotate})) "Frequencies"]
+     [:text (merge x-axis-label text-bold {:x (+ x (/ w 2)) :y (+ y 48) :text-anchor :middle})
+      x-label]
+     [:text (let [x-coord (- x 45)
+                  y-coord (- y (/ h 3))
+                  rotate (str "rotate(270 " x-coord " " y-coord ")")]
+              (merge x-axis-label text-bold {:x x-coord :y y-coord :transform rotate}))
+      "Frequencies"]
      (histogram-y-axis (- x 7) y h (or binned-freq-mx 10))]))
 
 (defn histogram-view
