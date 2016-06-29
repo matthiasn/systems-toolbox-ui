@@ -9,7 +9,7 @@
   :dependencies [[reagent "0.6.0-alpha"]
                  [matthiasn/systems-toolbox "0.6.1-SNAPSHOT"]]
 
-  :profiles {:dev  {:dependencies   [[org.clojure/clojure "1.9.0-alpha7"]
+  :profiles {:dev  {:dependencies   [[org.clojure/clojure "1.9.0-alpha8"]
                                      [org.clojure/clojurescript "1.9.93"]
                                      [matthiasn/systems-toolbox-sente "0.6.1-SNAPSHOT"]
                                      [ch.qos.logback/logback-classic "1.1.7"]
