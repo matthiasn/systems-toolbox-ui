@@ -10,10 +10,16 @@
   [nodes-list obs-cfg]
   (let [nodes (map (fn [k]
                      (let [fixed-nodes (:fixed-nodes obs-cfg)]
-                       {:name          (if (namespace k) (str (namespace k) "/" (name k)) (name k))
+                       {:name          (if (namespace k)
+                                         (str (namespace k) "/" (name k))
+                                         (name k))
                         :key           k
-                        :x             (if (contains? fixed-nodes k) (-> fixed-nodes k :x) (+ (* 800 (r)) 100))
-                        :y             (if (contains? fixed-nodes k) (-> fixed-nodes k :y) (+ (* 800 (r)) 100))
+                        :x             (if (contains? fixed-nodes k)
+                                         (-> fixed-nodes k :x)
+                                         (+ (* 800 (r)) 100))
+                        :y             (if (contains? fixed-nodes k)
+                                         (-> fixed-nodes k :y)
+                                         (+ (* 800 (r)) 100))
                         :last-received (now)}))
                    nodes-list)]
     (into {} (map (fn [itm] [(:key itm) itm]) nodes))))
@@ -21,7 +27,7 @@
 (defn links-fn
   [nodes-map links]
   (vec (map (fn [m] {:source (:idx ((:from m) nodes-map))
-                         :target (:idx ((:to m) nodes-map))}) links)))
+                     :target (:idx ((:to m) nodes-map))}) links)))
 
 (defn cmp-node
   [app node cmp-key]
@@ -34,7 +40,11 @@
         tx-cnt (:tx-count node)]
     (when x
       [:g {:transform (str "translate(" x "," y ")")
-           :on-click  #(prn ((-> @app (:switchboard-state) (:components) (cmp-key) (:state-snapshot-fn))))}
+           :on-click  #(prn ((-> @app
+                                 (:switchboard-state)
+                                 (:components)
+                                 (cmp-key)
+                                 (:state-snapshot-fn))))}
        [:rect {:x      -60
                :y      -25
                :width  120
@@ -43,21 +53,42 @@
                :ry     5
                :fill   :white
                :stroke (if (zero? grp) "#C55" "#5C5") :stroke-width "2px"}]
-       [:text {:dy   "-.5em" :text-anchor :middle :text-rendering "geometricPrecision" :stroke :none
-               :fill :black :font-size "11px" :style {:font-weight :bold}} (str cmp-key)]
-       [:text {:dy   "1em" :text-anchor :middle :text-rendering "geometricPrecision" :stroke :none
-               :fill :gray :font-size "11px" :style {:font-weight :bold}}
+       [:text {:dy             "-.5em"
+               :text-anchor    :middle
+               :text-rendering "geometricPrecision"
+               :stroke         :none
+               :fill           :black
+               :font-size      "11px"
+               :style          {:font-weight :bold}}
+        (str cmp-key)]
+       [:text {:dy             "1em"
+               :text-anchor    :middle
+               :text-rendering "geometricPrecision"
+               :stroke         :none
+               :fill           :gray
+               :font-size      "11px"
+               :style          {:font-weight :bold}}
         (str (when rx-cnt (str "rx: " rx-cnt)) (when tx-cnt (str " tx: " tx-cnt)))]
-       [:rect {:x     44 :y 5 :width 10 :height 10 :rx 1 :ry 1 :fill :green
-               :style {:opacity (let [opacity (/ (max 0 (- 250 ms-since-tx)) 250)]
-                                  opacity)}}]
-       [:rect {:x     -54 :y 5 :width 10 :height 10 :rx 1 :ry 1 :fill :orangered
-               :style {:opacity (let [opacity (/ (max 0 (- 250 ms-since-rx)) 250)]
-                                  opacity)}}]])))
+       [:rect {:x      44
+               :y      5
+               :width  10
+               :height 10
+               :rx     1
+               :ry     1
+               :fill   :green
+               :style  {:opacity (/ (max 0 (- 250 ms-since-tx)) 250)}}]
+       [:rect {:x      -54
+               :y      5
+               :width  10
+               :height 10
+               :rx     1
+               :ry     1
+               :fill   :orangered
+               :style  {:opacity (/ (max 0 (- 250 ms-since-rx)) 250)}}]])))
 
 (defn system-view
-  "Renders SVG with an area in which components of a system are shown as a visual representation. These
-  visual representations aim at helping in observing a running system."
+  "Renders SVG with an area in which components of a system are shown as a visual representation.
+  These visual representations aim at helping in observing a running system."
   [app put-fn cfg]
   (let [nodes-map (:nodes-map @app)
         links (:links @app)]
@@ -90,8 +121,8 @@
           system-view-elem (by-id (:dom-id obs-cfg))]
       (r/render-component [system-view app put-fn obs-cfg] system-view-elem)
       (letfn [(step []
-                    (request-animation-frame step)
-                    (swap! app assoc :now (now)))]
+                (request-animation-frame step)
+                (swap! app assoc :now (now)))]
         (request-animation-frame step))
       {:state app})))
 
@@ -108,7 +139,8 @@
         (swap! cmp-state update-in [:nodes-map cmp-id :rx-count] #(inc (or % 0)))))))
 
 (defn state-snapshot-handler
-  "Creates a handler function for component snapshot messages. Uses messages from switchboard for configuring UI."
+  "Creates a handler function for component snapshot messages. Uses messages from switchboard for
+  configuring the UI."
   [switchbrd-id]
   (fn
     [{:keys [cmp-state msg-payload] :as msg-map}]
@@ -137,4 +169,4 @@
                  :firehose/cmp-recv          (count-msg :last-rx :rx-count)
                  :firehose/cmp-recv-state    (count-msg :last-rx :rx-count)}
    :opts        {:snapshots-on-firehose false
-                 :reload-cmp false}})
+                 :reload-cmp            false}})

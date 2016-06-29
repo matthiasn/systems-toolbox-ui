@@ -110,15 +110,24 @@
                  :fill   color :stroke "black"
                  :width  bar-width
                  :height (* f y-scale)}])
-       [:text {:x     (+ x (/ w 2)) :y (- y 50) :stroke "none" :fill "#DDD" :text-anchor :middle
-               :style {:font-weight :bold :font-size 24}} "insufficient data"])
+       [:text {:x           (+ x (/ w 2))
+               :y           (- y 50)
+               :stroke      "none"
+               :fill        "#DDD"
+               :text-anchor :middle
+               :style       {:font-weight :bold :font-size 24}}
+        "insufficient data"])
      (histogram-x-axis x (+ y 7) mn2 mx2 w x-scale increment)
-     [:text (merge x-axis-label text-bold {:x (+ x (/ w 2)) :y (+ y 48) :text-anchor :middle})
+     [:text (merge x-axis-label text-bold {:x           (+ x (/ w 2))
+                                           :y           (+ y 48)
+                                           :text-anchor :middle})
       x-label]
      [:text (let [x-coord (- x 45)
                   y-coord (- y (/ h 3))
                   rotate (str "rotate(270 " x-coord " " y-coord ")")]
-              (merge x-axis-label text-bold {:x x-coord :y y-coord :transform rotate}))
+              (merge x-axis-label text-bold {:x         x-coord
+                                             :y         y-coord
+                                             :transform rotate}))
       "Frequencies"]
      (histogram-y-axis (- x 7) y h (or binned-freq-mx 10))]))
 
@@ -127,7 +136,8 @@
   with a reasonable size inside a viewBox, which will then scale smoothly into any
   div you put it in."
   [data label color]
-  [:svg {:width "100%" :viewBox "0 0 400 250"}
+  [:svg {:width   "100%"
+         :viewBox "0 0 400 250"}
    (histogram-view-fn {:rtt-times data
                        :x         80
                        :y         180
