@@ -10,18 +10,21 @@
                  [matthiasn/systems-toolbox "0.6.1-SNAPSHOT"]]
 
   :profiles {:dev  {:dependencies   [[org.clojure/clojure "1.9.0-alpha8"]
-                                     [org.clojure/clojurescript "1.9.93"]
+                                     [org.clojure/clojurescript "1.9.93"
+                                      :exclusions [org.clojure/tools.reader]]
                                      [matthiasn/systems-toolbox-sente "0.6.1-SNAPSHOT"]
                                      [ch.qos.logback/logback-classic "1.1.7"]
                                      [hiccup "1.0.5"]
-                                     [org.seleniumhq.selenium/selenium-java "2.53.0"]
+                                     [org.seleniumhq.selenium/selenium-java "2.53.0"
+                                      :exclusions [commons-io]]
                                      [org.seleniumhq.selenium/selenium-api "2.53.0"]
                                      [org.seleniumhq.selenium/selenium-server "2.53.0"]
-                                     [org.seleniumhq.selenium/selenium-htmlunit-driver "2.52.0"]
                                      [org.seleniumhq.selenium/selenium-remote-driver "2.53.0"]
                                      [org.seleniumhq.selenium/selenium-chrome-driver "2.53.0"]
+                                     [org.seleniumhq.selenium/selenium-htmlunit-driver "2.52.0"]
                                      [com.codeborne/phantomjsdriver "1.3.0"]
-                                     [clj-webdriver "0.7.2"]]
+                                     [clj-webdriver "0.7.2" :exclusions [org.clojure/core.cache
+                                                                         commons-io]]]
                     :resource-paths ["test-resources"]}
              :test {:resource-paths ["test-resources"]
                     :jvm-opts       ["-Dwebdriver.chrome.driver=bin/chromedriver"]}}
