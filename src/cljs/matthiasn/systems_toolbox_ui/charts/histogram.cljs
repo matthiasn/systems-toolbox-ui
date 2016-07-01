@@ -1,62 +1,26 @@
-(ns matthiasn.systems-toolbox-ui.charts.histogram)
+(ns matthiasn.systems-toolbox-ui.charts.histogram
+  (:require [matthiasn.systems-toolbox-ui.charts.math :as m]))
 
 (def text-default {:stroke "none" :fill "black" :style {:font-size 12}})
 (def text-bold (merge text-default {:style {:font-weight :bold :font-size 12}}))
 (def x-axis-label (merge text-default {:text-anchor :middle}))
+(def y-axis-label (merge text-default {:text-anchor :end}))
 (def path-defaults {:fill :black :stroke :black :stroke-width 1})
-
-(defn interquartile-range
-  "Determines the interquartile range of values in a collection of numbers."
-  [sample]
-  (let [sorted (sort sample)
-        n (count sorted)
-        q1 (nth sorted (Math/floor (/ n 4)))
-        q3 (nth sorted (Math/floor (* (/ n 4) 3)))
-        iqr (- q3 q1)]
-    iqr))
-
-(defn percentile-range
-  "Returns only the values within the given percentile range."
-  [sample percentile]
-  (let [sorted (sort sample)
-        n (count sorted)
-        keep-n (Math/ceil (* n (/ percentile 100)))]
-    (take keep-n sorted)))
-
-(defn freedman-diaconis-rule
-  "Implements approximation of Freedman-Diaconis rule for determing bin size in histograms:
-  bin size = 2 IQR(x) n^-1/3 where IQR(x) is the interquartile range of the data and n is the
-  number of observations in the sample x. Argument coll is expected to be a collection of numbers."
-  [sample]
-  (let [n (count sample)]
-    (when (pos? n)
-      (* 2 (interquartile-range sample) (Math/pow n (/ -1 3))))))
-
-(defn round-up [n increment] (* (Math/ceil (/ n increment)) increment))
-(defn round-down [n increment] (* (Math/floor (/ n increment)) increment))
 
 (defn histogram-y-axis
   "Draws y-axis of a chart."
   [x y h mx]
-  (let [increment (cond (> mx 6000) 1000
-                        (> mx 3000) 500
-                        (> mx 1000) 250
-                        (> mx 250) 100
-                        (> mx 100) 50
-                        (> mx 50) 20
-                        (> mx 25) 10 :else 5)
-        rng (range 0 (inc (round-up mx increment)) increment)
+  (let [incr (m/default-increment-fn mx)
+        rng (range 0 (inc (m/round-up mx incr)) incr)
         scale (/ h (dec (count rng)))]
     [:g
      [:path (merge path-defaults {:d (str "M" x " " y "l 0 " (* h -1) " z")})]
      (for [n rng]
        ^{:key (str "yt" n)}
-       [:path (merge path-defaults
-                     {:d (str "M" x " " (- y (* (/ n increment) scale)) "l -" 6 " 0")})])
+       [:path (merge path-defaults {:d (str "M" x " " (- y (* (/ n incr) scale)) "l -" 6 " 0")})])
      (for [n rng]
        ^{:key (str "yl" n)}
-       [:text (merge text-default
-                     {:x (- x 10) :y (- y (* (/ n increment) scale) -4) :text-anchor :end}) n])]))
+       [:text (merge y-axis-label {:x (- x 10) :y (- y (* (/ n incr) scale) -4)}) n])]))
 
 (defn histogram-x-axis
   "Draws x-axis for histrogram."
@@ -71,31 +35,18 @@
        ^{:key (str "xl" n)}
        [:text (merge x-axis-label {:x (+ x (* (- n mn) scale)) :y (+ y 20)}) n])]))
 
-(defn default-increment-fn
-  [rng]
-  (cond (> rng 20000) 5000
-        (> rng 8000) 2000
-        (> rng 3000) 1000
-        (> rng 1500) 500
-        (> rng 900) 200
-        (> rng 400) 100
-        (> rng 200) 50
-        (> rng 90) 20
-        :else 10))
-
 (defn histogram-view-fn
-  "Renders a histogram for roundtrip times."
+  "Renders a histogram."
   [{:keys [rtt-times x y w h x-label color bin-cf max-bins increment-fn]}]
   (let [mx (apply max rtt-times)
         mn (apply min rtt-times)
         rng (- mx mn)
-        increment-fn (or increment-fn default-increment-fn)
+        increment-fn (or increment-fn m/default-increment-fn)
         increment (increment-fn rng)
-        mx2 (round-up (or mx 100) increment)
-        mn2 (round-down (or mn 0) increment)
-        rng2 (- mx2 mn2)
-        x-scale (/ w rng2)
-        bin-size (max (/ rng max-bins) (* (freedman-diaconis-rule rtt-times) bin-cf))
+        mx2 (m/round-up (or mx 10) increment)
+        mn2 (m/round-down (or mn 0) increment)
+        x-scale (/ w (- mx2 mn2))
+        bin-size (max (/ rng max-bins) (* (m/freedman-diaconis-rule rtt-times) bin-cf))
         binned-freq (frequencies (map (fn [n] (Math/floor (/ (- n mn) bin-size))) rtt-times))
         binned-freq-mx (apply max (map (fn [[_ f]] f) binned-freq))
         bins (inc (apply max (map (fn [[v _]] v) binned-freq)))
@@ -129,7 +80,7 @@
                                              :y         y-coord
                                              :transform rotate}))
       "Frequencies"]
-     (histogram-y-axis (- x 7) y h (or binned-freq-mx 10))]))
+     (histogram-y-axis (- x 7) y h (or binned-freq-mx 5))]))
 
 (defn histogram-view
   "Renders an individual histogram for the given data, dimension, label and color,

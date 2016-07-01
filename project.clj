@@ -4,7 +4,7 @@
   :license {:name "Eclipse Public License"
             :url  "http://www.eclipse.org/legal/epl-v10.html"}
 
-  :source-paths ["src/clj" "src/cljs" "src/cljc"]
+  :source-paths ["src/cljc" "src/clj" "src/cljs"]
 
   :dependencies [[reagent "0.6.0-alpha"]
                  [matthiasn/systems-toolbox "0.6.1-SNAPSHOT"]]
