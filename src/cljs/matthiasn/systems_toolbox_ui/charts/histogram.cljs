@@ -24,7 +24,7 @@
     (take keep-n sorted)))
 
 (defn freedman-diaconis-rule
-  "Implements approximation of Freedman–Diaconis rule for determing bin size in histograms:
+  "Implements approximation of Freedman-Diaconis rule for determing bin size in histograms:
   bin size = 2 IQR(x) n^-1/3 where IQR(x) is the interquartile range of the data and n is the
   number of observations in the sample x. Argument coll is expected to be a collection of numbers."
   [sample]
