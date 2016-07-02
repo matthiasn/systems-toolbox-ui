@@ -37,17 +37,17 @@
 
 (defn histogram-view-fn
   "Renders a histogram."
-  [{:keys [rtt-times x y w h x-label color bin-cf max-bins increment-fn]}]
-  (let [mx (apply max rtt-times)
-        mn (apply min rtt-times)
+  [{:keys [data x y w h x-label color bin-cf max-bins increment-fn]}]
+  (let [mx (apply max data)
+        mn (apply min data)
         rng (- mx mn)
         increment-fn (or increment-fn m/default-increment-fn)
         increment (increment-fn rng)
         mx2 (m/round-up (or mx 10) increment)
         mn2 (m/round-down (or mn 0) increment)
         x-scale (/ w (- mx2 mn2))
-        bin-size (max (/ rng max-bins) (* (m/freedman-diaconis-rule rtt-times) bin-cf))
-        binned-freq (frequencies (map (fn [n] (Math/floor (/ (- n mn) bin-size))) rtt-times))
+        bin-size (max (/ rng max-bins) (* (m/freedman-diaconis-rule data) bin-cf))
+        binned-freq (frequencies (map (fn [n] (Math/floor (/ (- n mn) bin-size))) data))
         binned-freq-mx (apply max (map (fn [[_ f]] f) binned-freq))
         bins (inc (apply max (map (fn [[v _]] v) binned-freq)))
         bar-width (/ (* rng x-scale) bins)
@@ -89,12 +89,12 @@
   [data label color]
   [:svg {:width   "100%"
          :viewBox "0 0 400 250"}
-   (histogram-view-fn {:rtt-times data
-                       :x         80
-                       :y         180
-                       :w         300
-                       :h         160
-                       :x-label   label
-                       :color     color
-                       :bin-cf    0.8
-                       :max-bins  25})])
+   (histogram-view-fn {:data     data
+                       :x        80
+                       :y        180
+                       :w        300
+                       :h        160
+                       :x-label  label
+                       :color    color
+                       :bin-cf   0.8
+                       :max-bins 25})])
