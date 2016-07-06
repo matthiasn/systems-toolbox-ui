@@ -69,10 +69,7 @@
                :style       {:font-weight :bold :font-size 24}}
         "insufficient data"])
      (histogram-x-axis x (+ y 7) mn2 mx2 w x-scale increment)
-     [:text (merge x-axis-label text-bold {:x           (+ x (/ w 2))
-                                           :y           (+ y 48)
-                                           :text-anchor :middle})
-      x-label]
+     [:text (merge x-axis-label text-bold {:x (+ x (/ w 2)) :y (+ y 48)}) x-label]
      [:text (let [x-coord (- x 45)
                   y-coord (- y (/ h 3))
                   rotate (str "rotate(270 " x-coord " " y-coord ")")]
