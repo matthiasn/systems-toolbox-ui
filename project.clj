@@ -1,4 +1,4 @@
-(defproject matthiasn/systems-toolbox-ui "0.6.1-SNAPSHOT"
+(defproject matthiasn/systems-toolbox-ui "0.6.1-alpha1"
   :description "UI components for systems-toolbox"
   :url "https://github.com/matthiasn/systems-toolbox"
   :license {:name "Eclipse Public License"
@@ -7,7 +7,7 @@
   :source-paths ["src/cljc" "src/clj" "src/cljs"]
 
   :dependencies [[reagent "0.6.0-alpha"]
-                 [matthiasn/systems-toolbox "0.6.1-SNAPSHOT"]]
+                 [matthiasn/systems-toolbox "0.6.1-alpha1"]]
 
   :profiles {:dev  {:dependencies   [[org.clojure/clojure "1.9.0-alpha9"]
                                      [org.clojure/clojurescript "1.9.93"
