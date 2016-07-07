@@ -1,14 +1,17 @@
 (ns matthiasn.systems-toolbox-ui.charts.math)
 
 (defn interquartile-range
-  "Determines the interquartile range of values in a collection of numbers."
+  "Determines the interquartile range of values in a sequence of numbers. Returns nil
+   when sequence empty."
   [sample]
-  (let [sorted (sort sample)
-        n (count sorted)
-        q1 (nth sorted (Math/floor (/ n 4)))
-        q3 (nth sorted (Math/floor (* (/ n 4) 3)))
-        iqr (- q3 q1)]
-    iqr))
+  (if (empty? sample)
+    nil
+    (let [sorted (sort sample)
+          n (count sorted)
+          q1 (nth sorted (Math/floor (/ n 4)))
+          q3 (nth sorted (Math/floor (* (/ n 4) 3)))
+          iqr (- q3 q1)]
+      iqr)))
 
 (defn percentile-range
   "Returns only the values within the given percentile range."
@@ -30,7 +33,7 @@
 (defn round-up [n increment] (* (Math/ceil (/ n increment)) increment))
 (defn round-down [n increment] (* (Math/floor (/ n increment)) increment))
 
-(defn increment-fn
+(defn best-increment-fn
   "Takes a seq of increments, a desired number of intervals in histogram axis,
    and the range of the values in the histogram. Sorts the values in increments
    by dividing the range by each to determine number of intervals with this value,
@@ -46,7 +49,7 @@
   (if rng
     (let [multipliers (map #(Math/pow 10 %) (range 0 6))
           increments (flatten (map (fn [i] (map #(* i %) multipliers)) [1 2.5 5]))
-          best-increment (increment-fn increments 5 rng)]
+          best-increment (best-increment-fn increments 5 rng)]
       (if (zero? (mod best-increment 1))
         (int best-increment)
         best-increment))
