@@ -19,9 +19,9 @@
     (take keep-n sorted)))
 
 (defn freedman-diaconis-rule
-  "Implements approximation of Freedman-Diaconis rule for determing bin size in histograms:
-  bin size = 2 IQR(x) n^-1/3 where IQR(x) is the interquartile range of the data and n is the
-  number of observations in the sample x. Argument coll is expected to be a collection of numbers."
+  "Implements approximation of the Freedman-Diaconis rule for determing bin size in histograms:
+   bin size = 2 IQR(x) n^-1/3 where IQR(x) is the interquartile range of the data and n is the
+   number of observations in sample x. Argument is expected to be a sequence of numbers."
   [sample]
   (let [n (count sample)]
     (when (pos? n)
@@ -30,20 +30,6 @@
 (defn round-up [n increment] (* (Math/ceil (/ n increment)) increment))
 (defn round-down [n increment] (* (Math/floor (/ n increment)) increment))
 
-(defn abs
-  "(abs n) is the absolute value of n.
-  Borrowed from: https://github.com/clojure/math.numeric-tower"
-  [n]
-  (cond
-    (not (number? n)) (throw #?(:clj   (IllegalArgumentException. "abs requires a number")
-                                :cljs (js/Error. "abs requires a number")))
-    (neg? n) (* n -1)
-    :else n))
-
-(defn exp [x n]
-  #?(:clj (Math/pow x n)
-     :cljs (.pow js/Math x n)))
-
 (defn increment-fn
   "Takes a seq of increments, a desired number of intervals in histogram axis,
    and the range of the values in the histogram. Sorts the values in increments
@@ -51,17 +37,36 @@
    subtracting the desired number of intervals, and then returning the increment
    with the smallest delta."
   [increments desired-n rng]
-  (first (sort-by #(abs (- (/ rng %) desired-n)) increments)))
+  (first (sort-by #(Math/abs (- (/ rng %) desired-n)) increments)))
 
 (defn default-increment-fn
   "Determines the increment between intervals in histogram axis.
    Defaults to increments in a range between 1 and 5,000,000."
   [rng]
   (if rng
-    (let [multipliers (map #(exp 10 %) (range 0 6))
+    (let [multipliers (map #(Math/pow 10 %) (range 0 6))
           increments (flatten (map (fn [i] (map #(* i %) multipliers)) [1 2.5 5]))
           best-increment (increment-fn increments 5 rng)]
       (if (zero? (mod best-increment 1))
         (int best-increment)
         best-increment))
     1))
+
+(defn histogram-calc
+  "Calculations for histogram."
+  [{:keys [data bin-cf max-bins increment-fn]}]
+  (let [mx (apply max data)
+        mn (apply min data)
+        rng (- mx mn)
+        increment-fn (or increment-fn default-increment-fn)
+        increment (increment-fn rng)
+        bin-size (max (/ rng max-bins) (* (freedman-diaconis-rule data) bin-cf))
+        binned-freq (frequencies (map (fn [n] (Math/floor (/ (- n mn) bin-size))) data))]
+    {:mn             mn
+     :mn2            (round-down (or mn 0) increment)
+     :mx2            (round-up (or mx 10) increment)
+     :rng            rng
+     :increment      increment
+     :binned-freq    binned-freq
+     :binned-freq-mx (apply max (map (fn [[_ f]] f) binned-freq))
+     :bins           (inc (apply max (map (fn [[v _]] v) binned-freq)))}))

@@ -64,24 +64,15 @@
           :style       {:font-weight :bold :font-size 24}} text])
 
 (defn histogram-view-fn
-  "Renders a histogram."
-  [{:keys [data x y w h x-label y-label color bin-cf min-bins max-bins increment-fn warning]}]
-  (let [mx (apply max data)
-        mn (apply min data)
-        rng (- mx mn)
-        increment-fn (or increment-fn m/default-increment-fn)
-        increment (increment-fn rng)
-        mx2 (m/round-up (or mx 10) increment)
-        mn2 (m/round-down (or mn 0) increment)
+  "Renders a histogram. Only takes care of the presentational aspects, the calculations are
+   done in the histogram-calc function in matthiasn.systems-toolbox-ui.charts.math."
+  [{:keys [x y w h x-label y-label color min-bins warning] :as args}]
+  (let [{:keys [mn mn2 mx2 rng increment bins binned-freq binned-freq-mx]} (m/histogram-calc args)
         x-scale (/ w (- mx2 mn2))
-        bin-size (max (/ rng max-bins) (* (m/freedman-diaconis-rule data) bin-cf))
-        binned-freq (frequencies (map (fn [n] (Math/floor (/ (- n mn) bin-size))) data))
-        binned-freq-mx (apply max (map (fn [[_ f]] f) binned-freq))
-        bins (inc (apply max (map (fn [[v _]] v) binned-freq)))
-        bar-width (/ (* rng x-scale) bins)
-        y-scale (/ (- h 20) binned-freq-mx)]
+        y-scale (/ (- h 20) binned-freq-mx)
+        bar-width (/ (* rng x-scale) bins)]
     [:g
-     (if (> bins min-bins)
+     (if (>= bins min-bins)
        (for [[v f] binned-freq]
          ^{:key (str "bf" x "-" y "-" v "-" f)}
          [:rect {:x      (+ x (* (- mn mn2) x-scale) (* v bar-width))
@@ -109,5 +100,5 @@
                        :warning  "insufficient data"
                        :color    color
                        :bin-cf   0.8
-                       :min-bins 4
+                       :min-bins 5
                        :max-bins 25})])
