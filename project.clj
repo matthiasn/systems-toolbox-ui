@@ -1,4 +1,4 @@
-(defproject matthiasn/systems-toolbox-ui "0.6.1-alpha1"
+(defproject matthiasn/systems-toolbox-ui "0.6.1-alpha2"
   :description "UI components for systems-toolbox"
   :url "https://github.com/matthiasn/systems-toolbox"
   :license {:name "Eclipse Public License"
