@@ -18,4 +18,4 @@
   (testing "IQR of empty seq is nil"
     (is (nil? (m/interquartile-range []))))
   (testing "IQR of seq with a single val is zero"
-    (is (zero? (m/interquartile-range [100])))))
+    (is (nil? (m/interquartile-range [100])))))

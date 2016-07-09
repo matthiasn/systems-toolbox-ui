@@ -1,17 +1,40 @@
 (ns matthiasn.systems-toolbox-ui.charts.math)
 
+(defn mean
+  "From: https://github.com/clojure-cookbook/"
+  [coll]
+  (let [sum (apply + coll)
+        count (count coll)]
+    (if (pos? count)
+      (/ sum count)
+      0)))
+
+(defn median
+  "Modified from: https://github.com/clojure-cookbook/
+   Adapted to return nil when collection empty."
+  [coll]
+  (let [sorted (sort coll)
+        cnt (count sorted)
+        halfway (quot cnt 2)]
+    (if (empty? coll)
+      nil
+      (if (odd? cnt)
+        (nth sorted halfway)
+        (let [bottom (dec halfway)
+              bottom-val (nth sorted bottom)
+              top-val (nth sorted halfway)]
+          (mean [bottom-val top-val]))))))
+
 (defn interquartile-range
   "Determines the interquartile range of values in a sequence of numbers. Returns nil
-   when sequence empty."
+   when sequence empty or only contains a single entry."
   [sample]
-  (if (empty? sample)
-    nil
-    (let [sorted (sort sample)
-          n (count sorted)
-          q1 (nth sorted (Math/floor (/ n 4)))
-          q3 (nth sorted (Math/floor (* (/ n 4) 3)))
-          iqr (- q3 q1)]
-      iqr)))
+  (let [sorted (sort sample)
+        cnt (count sorted)
+        halfway (quot cnt 2)
+        q1 (median (take halfway sorted))
+        q3 (median (take-last halfway sorted))]
+    (when (and q3 q1) (- q3 q1))))
 
 (defn percentile-range
   "Returns only the values within the given percentile range."
