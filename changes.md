@@ -1,3 +1,12 @@
+## v0.6.1-alpha5 - July 11th, 2016
+
+```clojure
+[matthiasn/systems-toolbox-u "0.6.1-alpha5"]
+```
+
+* latest dependencies
+
+
 ## v0.6.1-SNAPSHOT - June 17th, 2016
 
 ```clojure
