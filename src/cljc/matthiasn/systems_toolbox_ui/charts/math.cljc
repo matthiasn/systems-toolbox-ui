@@ -31,17 +31,17 @@
   [sample]
   (let [sorted (sort sample)
         cnt (count sorted)
-        halfway (quot cnt 2)
-        q1 (median (take halfway sorted))
-        q3 (median (take-last halfway sorted))]
+        half-cnt (quot cnt 2)
+        q1 (median (take half-cnt sorted))
+        q3 (median (take-last half-cnt sorted))]
     (when (and q3 q1) (- q3 q1))))
 
 (defn percentile-range
   "Returns only the values within the given percentile range."
   [sample percentile]
   (let [sorted (sort sample)
-        n (count sorted)
-        keep-n (Math/ceil (* n (/ percentile 100)))]
+        cnt (count sorted)
+        keep-n (Math/ceil (* cnt (/ percentile 100)))]
     (take keep-n sorted)))
 
 (defn freedman-diaconis-rule
