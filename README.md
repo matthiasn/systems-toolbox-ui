@@ -1,15 +1,12 @@
 # systems-toolbox-ui
 
-This library gives you all you need for building a user interface in the browser on top of 
-**[React](https://facebook.github.io/react/)**, using ClojureScript and the 
-**[system-toolbox](https://github.com/matthiasn/systems-toolbox)** library.
+This library gives you all you need for building a user interface in the browser on top of **[React](https://facebook.github.io/react/)**, using ClojureScript and the **[system-toolbox](https://github.com/matthiasn/systems-toolbox)** library.
 
 The general idea is that there is a **systems-toolbox** component that holds
 application state and business logic. This component is then observed by UI components.
 The definition of the UI component is basically a function that transforms application state
 into a rendered user interface. Interaction with that state component then takes place via 
-sending messages. This approach is somewhat similar to the one found in
- **[Redux](https://github.com/reactjs/redux)**.
+sending messages. This approach is somewhat similar to the one found in **[Redux](https://github.com/reactjs/redux)**.
 
 UI components can also hold their own, independent state and interact with it directly, 
 should there be a need for this.
@@ -20,9 +17,7 @@ should there be a need for this.
 
 2) A much larger example of an application using this library is **[BirdWatch](https://github.com/matthiasn/Birdwatch)**, a tweet stream analysis application that spans browser and client. There's a live version of this application **[here](https://birdwatch.matthiasnehlsen.com)**.
 
-This library has previously been part of the 
-**[system-toolbox](https://github.com/matthiasn/systems-toolbox)** library and was moved into a separate 
-repository to reduce dependencies.
+This library has previously been part of the **[system-toolbox](https://github.com/matthiasn/systems-toolbox)** library and was moved into a separate repository to reduce dependencies.
 
 ## Testing
 
@@ -34,9 +29,6 @@ With ChromeDriver installed, you can fire up the tests:
 
     $ lein integrations-tests
 
-This will run the server side on port `8888`. You can change this via environment variable:
-
-    $ PORT=3333 lein integration-tests
 
 Also, you can run the tests using **[PhantomJS](http://phantomjs.org/)**:
 
