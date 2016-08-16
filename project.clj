@@ -11,8 +11,7 @@
 
   :profiles
   {:dev {:dependencies   [[org.clojure/clojure "1.9.0-alpha10"]
-                           [org.clojure/clojurescript "1.9.198"
-                            :exclusions [org.clojure/tools.reader]]
+                           [org.clojure/clojurescript "1.9.216"]
                            [matthiasn/systems-toolbox-sente "0.6.1-alpha5"]
                            [ch.qos.logback/logback-classic "1.1.7"]
                            [hiccup "1.0.5"]
