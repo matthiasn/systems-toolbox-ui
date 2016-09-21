@@ -23,13 +23,14 @@
      :observed observed}))
 
 (defn cmp-map
-  "Creates a component map for a UI component using Reagent. This map can then be used by the
-  comp/make-component function to initialize a component. Typically, this would be done by the
-  switchboard."
+  "Creates a component map for a UI component using Reagent. This map can then
+   be used by the comp/make-component function to initialize a component.
+   Typically, this would be done by the switchboard."
   {:added "0.3.1"}
-  [{:keys [cmp-id view-fn lifecycle-callbacks dom-id initial-state init-fn cfg handler-map
-           state-pub-handler observed-xform] :as cmp-map}]
-  (let [snapshot-wrapper (fn [m] (view-fn (merge m {:current-state @(:observed m)})))
+  [{:keys [cmp-id view-fn lifecycle-callbacks dom-id initial-state init-fn cfg
+           handler-map state-pub-handler observed-xform] :as cmp-map}]
+  (let [snapshot-wrapper (fn [m]
+                           (view-fn (merge m {:current-state @(:observed m)})))
         reagent-cmp-map (merge lifecycle-callbacks
                                {:reagent-render snapshot-wrapper})
         mk-state (partial init reagent-cmp-map dom-id initial-state init-fn)]

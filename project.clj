@@ -1,4 +1,4 @@
-(defproject matthiasn/systems-toolbox-ui "0.6.1-alpha8"
+(defproject matthiasn/systems-toolbox-ui "0.6.1-alpha9"
   :description "UI components for systems-toolbox"
   :url "https://github.com/matthiasn/systems-toolbox"
   :license {:name "Eclipse Public License"
@@ -6,12 +6,12 @@
 
   :source-paths ["src/cljc" "src/clj" "src/cljs"]
 
-  :dependencies [[reagent "0.6.0-rc"]
-                 [matthiasn/systems-toolbox "0.6.1-alpha6"]]
+  :dependencies [[reagent "0.6.0"]
+                 [matthiasn/systems-toolbox "0.6.1-alpha7"]]
 
   :profiles
-  {:dev {:dependencies   [[org.clojure/clojure "1.9.0-alpha11"]
-                           [org.clojure/clojurescript "1.9.225"]
+  {:dev {:dependencies   [[org.clojure/clojure "1.9.0-alpha12"]
+                           [org.clojure/clojurescript "1.9.229"]
                            [matthiasn/systems-toolbox-sente "0.6.1-alpha7"]
                            [ch.qos.logback/logback-classic "1.1.7"]
                            [hiccup "1.0.5"]
@@ -29,7 +29,7 @@
    :test {:resource-paths ["test-resources"]
           :jvm-opts       ["-Dwebdriver.chrome.driver=bin/chromedriver"]}}
 
-  :plugins [[lein-codox "0.9.6" :exclusions [org.clojure/clojure]]
+  :plugins [[lein-codox "0.10.0" :exclusions [org.clojure/clojure]]
             [test2junit "1.2.2"]
             [lein-cljsbuild "1.1.4"]]
 
