@@ -14,3 +14,5 @@ pom.xml.asc
 *.rdb
 test-resources/public/js
 build.xml
+bin/geckodriver
+bin/chromedriver
