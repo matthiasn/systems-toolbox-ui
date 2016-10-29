@@ -10,7 +10,7 @@
                  [matthiasn/systems-toolbox "0.6.1-alpha8"]]
 
   :profiles
-  {:dev {:dependencies   [[org.clojure/clojure "1.9.0-alpha13"]
+  {:dev {:dependencies   [[org.clojure/clojure "1.9.0-alpha14"]
                            [org.clojure/clojurescript "1.9.293"]
                            [matthiasn/systems-toolbox-sente "0.6.1-alpha11"]
                            [ch.qos.logback/logback-classic "1.1.7"]
