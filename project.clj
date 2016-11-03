@@ -7,12 +7,12 @@
   :source-paths ["src/cljc" "src/clj" "src/cljs"]
 
   :dependencies [[reagent "0.6.0"]
-                 [matthiasn/systems-toolbox "0.6.1-alpha8"]]
+                 [matthiasn/systems-toolbox "0.6.1-alpha9"]]
 
   :profiles
   {:dev {:dependencies   [[org.clojure/clojure "1.9.0-alpha14"]
                            [org.clojure/clojurescript "1.9.293"]
-                           [matthiasn/systems-toolbox-sente "0.6.1-alpha11"]
+                           [matthiasn/systems-toolbox-sente "0.6.1-alpha13"]
                            [ch.qos.logback/logback-classic "1.1.7"]
                            [hiccup "1.0.5"]
                            [org.seleniumhq.selenium/selenium-java "3.0.1"]
