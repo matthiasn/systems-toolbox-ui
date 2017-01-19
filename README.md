@@ -11,6 +11,8 @@ sending messages. This approach is somewhat similar to the one found in **[Redux
 UI components can also hold their own, independent state and interact with it directly, 
 should there be a need for this.
 
+[![Dependencies Status](https://jarkeeper.com/matthiasn/systems-toolbox-ui/status.svg)](https://jarkeeper.com/matthiasn/systems-toolbox-ui)
+
 ## Examples
 
 1) In the examples directory of the **[systems-toolbox](https://github.com/matthiasn/systems-toolbox/tree/master/examples)**, you can find a basic example example with some counters. This example is somewhat comparable to the respective Redux example. This example is currently client-side only.

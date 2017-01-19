@@ -1,4 +1,4 @@
-(defproject matthiasn/systems-toolbox-ui "0.6.1"
+(defproject matthiasn/systems-toolbox-ui "0.6.2"
   :description "UI components for systems-toolbox"
   :url "https://github.com/matthiasn/systems-toolbox"
   :license {:name "Eclipse Public License"
@@ -7,13 +7,13 @@
   :source-paths ["src/cljc" "src/clj" "src/cljs"]
 
   :dependencies [[reagent "0.6.0"]
-                 [matthiasn/systems-toolbox "0.6.1"]]
+                 [matthiasn/systems-toolbox "0.6.4"]]
 
   :profiles
   {:dev {:dependencies   [[org.clojure/clojure "1.9.0-alpha14"]
                            [org.clojure/clojurescript "1.9.293"]
-                           [matthiasn/systems-toolbox-sente "0.6.1"]
-                           [ch.qos.logback/logback-classic "1.1.7"]
+                           [matthiasn/systems-toolbox-sente "0.6.5"]
+                           [ch.qos.logback/logback-classic "1.1.8"]
                            [hiccup "1.0.5"]
                            [org.seleniumhq.selenium/selenium-java "3.0.1"]
                            [org.seleniumhq.selenium/selenium-api "3.0.1"]
@@ -33,7 +33,7 @@
 
   :plugins [[lein-codox "0.10.2" :exclusions [org.clojure/clojure]]
             [test2junit "1.2.5"]
-            [lein-cljsbuild "1.1.4"]]
+            [lein-cljsbuild "1.1.5"]]
 
   :test2junit-output-dir ~(or (System/getenv "CIRCLE_TEST_REPORTS") "target/test2junit")
 
