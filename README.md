@@ -1,5 +1,7 @@
 # systems-toolbox-ui
 
+April 2017: this library is now DEPRECATED, it is much less cumbersome to use re-frame instead - see the updated examples in the [systems-toolbox](https://github.com/matthiasn/systems-toolbox) and [BirdWatch](https://github.com/matthiasn/BirdWatch).
+
 This library gives you all you need for building a user interface in the browser on top of **[React](https://facebook.github.io/react/)**, using ClojureScript and the **[system-toolbox](https://github.com/matthiasn/systems-toolbox)** library.
 
 The general idea is that there is a **systems-toolbox** component that holds
